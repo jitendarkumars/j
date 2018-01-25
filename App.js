@@ -9,10 +9,11 @@ import {
   Platform,
   StyleSheet,
   Text,
-  View
+  View,
+  Image,
+  ImageBackground
 } from 'react-native';
-import Login from './src/index';
-
+import {Container,Header} from 'native-base'
 const instructions = Platform.select({
   ios: 'Press Cmd+R to reload,\n' +
     'Cmd+D or shake for dev menu',
@@ -23,7 +24,18 @@ const instructions = Platform.select({
 export default class App extends Component<{}> {
   render() {
     return (
-    <Login/> 
+   
+  <View>
+   <Header>
+     </Header>
+    <ImageBackground source={require('./backImg.jpg')} style={{
+          width: '100%',
+          height: '100%',}}>
+
+    
+      </ImageBackground>
+     
+    </View>  
     );
   }
 }
