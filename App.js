@@ -15,30 +15,29 @@ import {
   Alert
 } from 'react-native';
 import {Header,Left,Right,Body,Icon,Content,Item,Input,Form,Button,Spinner} from 'native-base'
-
+import Signup from './src/signup';
 
 export default class App extends Component<{}> {
   
   constructor(props,context){
     super(props,context);
     this.state = {
-          EmailTextBox : '',
+          UserNameTextBox : '',
           PasswordTextBox : '',
          buttonPressed: false,
+         SignupButon:false,
+         showPassword:true,
       }
     
   }
 
-  validateEmail = (email) => {
-    var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-      return re.test(email);
-  };
   
+
   handleLogin = async() => {
        this.setState({buttonPressed:true})
-        if(this.state.EmailTextBox == ''  || !this.validateEmail(this.state.EmailTextBox))
+        if(this.state.UserNameTextBox == '' )
         {
-        Alert.alert('please enter correct email')
+        Alert.alert('please enter correct UserName')
         this.setState({buttonPressed:false})
         }
         else{
@@ -47,11 +46,20 @@ export default class App extends Component<{}> {
         }
        
     }
-  
-  handleEmailChange = EmailTextBox => {
+    managePasswordVisibility = () =>
+    {
+      this.setState({ showPassword: !this.state.showPassword });
+    }
+    
+handleSignup= async()=>{
+  this.setState({buttonPressed:true})
+  this.setState({SignupButon: true})
+}
+
+  handleUserNameChange = UserNameTextBox => {
     this.setState({
       ...this.state,
-      EmailTextBox: EmailTextBox
+      UserNameTextBox: UserNameTextBox
     })
   }
 
@@ -61,6 +69,7 @@ export default class App extends Component<{}> {
       PasswordTextBox: PasswordTextBox
     })
   }
+
 
  
   render() {
@@ -77,13 +86,19 @@ export default class App extends Component<{}> {
 <Form>
 <Text style={{fontSize:40, paddingBottom:30, alignSelf:'center'}}>BOOKSHARE</Text>
           <Item rounded style={{borderColor:'black'}} >
-            <Input placeholder='Enter Your Email' placeholderTextColor='white'  style={{color:'white'}} onChangeText={this.handleEmailChange} value= {this.state.EmailTextBox} />
+            <Input placeholder='Enter Your UserName' placeholderTextColor='white'  style={{color:'white'}} onChangeText={this.handleUserNameChange} value= {this.state.UserNameTextBox} />
           </Item >
           
           <Text style={{ paddingBottom:20, alignSelf:'center'}}></Text>
          
           <Item  style={{borderColor:'black'}} rounded>
-            <Input  secureTextEntry placeholder='Enter Your Password' placeholderTextColor='white' value= {this.state.PasswordTextBox} onChangeText={this.handlePasswordChange} style={{color:'white'}}/>
+          
+            <Input  secureTextEntry={this.state.showPassword} placeholder='Enter Your Password'
+             placeholderTextColor='white'  value= {this.state.PasswordTextBox}
+              onChangeText={this.handlePasswordChange} style={{color:'white'}}>
+         
+          </Input>
+          <Button transparent onPress={this.managePasswordVisibility}><Icon name="eye"/></Button>
           </Item>
           
           <Text style={{ paddingBottom:20, alignSelf:'center'}}></Text>
@@ -98,8 +113,9 @@ export default class App extends Component<{}> {
           
           <Text style={{ paddingBottom:50, alignSelf:'center'}}></Text>
           
-            <Button  transparent style={{alignSelf:'center',}}><Text style={{color:'white',fontSize:20}} 
-            onClick='handleSignup'
+            <Button  transparent style={{alignSelf:'center'}}>
+            <Text style={{color:'white',fontSize:20}} 
+            onPress={this.handleSignup}
             >New User? Register Here!</Text></Button>
            
           </Form>
@@ -110,10 +126,10 @@ export default class App extends Component<{}> {
     </View>  
     );
   }
-  else {
+  else  if(this.state.SignupButon==true){
     return(
       <View>
-        <Spinner/>
+        <Signup/>
         </View>
     );
   }
